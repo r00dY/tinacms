@@ -12,5 +12,30 @@
       "_template": "cta",
       "text": "Log In"
     }
-  ]
+  ],
+  "responsive-init-desktop": {
+    "default-none": {
+      "desktop": "SUPER DESKTOP VALUE"
+    },
+    "default-desktop": {
+      "desktop": "SUPER DESKTOP VALUE"
+    },
+    "default-both": {
+      "desktop": "SUPER DESKTOP VALUE"
+    }
+  },
+  "responsive-init-both": {
+    "default-none": {
+      "desktop": "SUPER DESKTOP VALUE",
+      "mobile": "HYPER MOBILE VALUE"
+    },
+    "default-desktop": {
+      "desktop": "SUPER DESKTOP VALUE",
+      "mobile": "HYPER MOBILE VALUE"
+    },
+    "default-both": {
+      "desktop": "SUPER DESKTOP VALUE",
+      "mobile": "HYPER MOBILE VALUE"
+    }
+  }
 }

@@ -26,4 +26,5 @@ export {
   TextFieldPlugin,
   TextareaFieldPlugin,
   ToggleFieldPlugin,
+  ResponsiveFieldPlugin,
 } from '@tinacms/fields'
