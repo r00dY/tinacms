@@ -1,20 +1,20 @@
 /**
 
-Copyright 2019 Forestry.io Inc
+ Copyright 2019 Forestry.io Inc
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
 
-*/
+ */
 
 import { useJsonForm } from 'next-tinacms-json'
 import { useScreenPlugin, usePlugin } from 'tinacms'
@@ -57,7 +57,21 @@ function Index(props) {
     </Layout>
   )
 }
-
+// {
+//     label: 'Responsive value',
+//     name: 'responsive$$variant',
+//     component: 'text',
+// },
+// {
+//     label: 'Responsive value',
+//     name: 'responsive$$desktop',
+//     component: 'text',
+// },
+// {
+//     label: 'Responsive value',
+//     name: 'responsive$$mobile',
+//     component: 'text',
+// },
 const formOptions = {
   label: 'Home Page',
   fields: [
@@ -66,7 +80,111 @@ const formOptions = {
       name: 'tags',
       component: 'tags',
     },
-    { label: 'Name', name: 'name', component: 'text' },
+    {
+      label: 'Name',
+      name: 'name',
+      component: 'text',
+    },
+
+    {
+      label: 'Responsive - no init data',
+      name: 'responsive-no-init',
+      component: 'group',
+      fields: [
+        {
+          label: 'No default',
+          name: 'default-none',
+          component: 'responsive',
+          subComponent: 'text',
+        },
+        {
+          label: 'Default desktop',
+          name: 'default-desktop',
+          component: 'responsive',
+          subComponent: 'text',
+          defaultValue: {
+            desktop: 'default desktop value',
+          },
+        },
+        {
+          label: 'Default desktop+mobile',
+          name: 'default-both',
+          component: 'responsive',
+          subComponent: 'text',
+          defaultValue: {
+            desktop: 'default desktop value',
+            mobile: 'default mobile value',
+          },
+        },
+      ],
+    },
+
+    {
+      label: 'Responsive - init data desktop',
+      name: 'responsive-init-desktop',
+      component: 'group',
+      fields: [
+        {
+          label: 'No default',
+          name: 'default-none',
+          component: 'responsive',
+          subComponent: 'text',
+        },
+        {
+          label: 'Default desktop',
+          name: 'default-desktop',
+          component: 'responsive',
+          subComponent: 'text',
+          defaultValue: {
+            desktop: 'default desktop value',
+          },
+        },
+        {
+          label: 'Default desktop+mobile',
+          name: 'default-both',
+          component: 'responsive',
+          subComponent: 'text',
+          defaultValue: {
+            desktop: 'default desktop value',
+            mobile: 'default mobile value',
+          },
+        },
+      ],
+    },
+
+    {
+      label: 'Responsive - init data desktop+mobile',
+      name: 'responsive-init-both',
+      component: 'group',
+      fields: [
+        {
+          label: 'No default',
+          name: 'default-none',
+          component: 'responsive',
+          subComponent: 'text',
+        },
+        {
+          label: 'Default desktop',
+          name: 'default-desktop',
+          component: 'responsive',
+          subComponent: 'text',
+          defaultValue: {
+            desktop: 'default desktop value',
+          },
+        },
+        {
+          label: 'Default desktop+mobile',
+          name: 'default-both',
+          component: 'responsive',
+          subComponent: 'text',
+          defaultValue: {
+            desktop: 'default desktop value',
+            mobile: 'default mobile value',
+          },
+        },
+      ],
+    },
+
     {
       name: 'body',
       label: 'Home Page Content',

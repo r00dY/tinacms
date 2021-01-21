@@ -32,6 +32,7 @@ import {
   ListFieldPlugin,
   BlocksFieldPlugin,
   TagsFieldPlugin,
+  ResponsiveFieldPlugin,
 } from '@tinacms/fields'
 import { Form } from '@tinacms/forms'
 import { Alerts, EventsToAlerts } from '@tinacms/alerts'
@@ -61,6 +62,7 @@ const DEFAULT_FIELDS = [
   MarkdownFieldPlaceholder,
   HtmlFieldPlaceholder,
   DateFieldPlaceholder,
+  ResponsiveFieldPlugin,
 ]
 
 export interface TinaCMSConfig extends CMSConfig {

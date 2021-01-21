@@ -21,24 +21,39 @@ import { FieldProps } from './fieldProps'
 import styled, { css } from 'styled-components'
 
 type InputFieldType<ExtraFieldProps, InputProps> = FieldProps<InputProps> &
-  ExtraFieldProps
+  ExtraFieldProps & {
+    topRightContent?: any
+  }
 
 // Wraps the Field component in labels describing the field's meta state
 // Add any other fields that the Field component should expect onto the ExtraFieldProps generic type
+
+export function FieldMetaWrapper<ExtraFieldProps = {}, InputProps = {}>(
+  props: InputFieldType<ExtraFieldProps, InputProps>
+) {
+  return (
+    <FieldMeta
+      name={props.input.name}
+      label={props.field.label}
+      description={props.field.description}
+      error={props.meta.error}
+      noWrap={props.noWrap}
+      topRightContent={props.topRightContent}
+    >
+      {props.children}
+    </FieldMeta>
+  )
+}
+
 export function wrapFieldsWithMeta<ExtraFieldProps = {}, InputProps = {}>(
   Field:
     | React.StatelessComponent<InputFieldType<ExtraFieldProps, InputProps>>
     | React.ComponentClass<InputFieldType<ExtraFieldProps, InputProps>>
 ) {
   return (props: InputFieldType<ExtraFieldProps, InputProps>) => (
-    <FieldMeta
-      name={props.input.name}
-      label={props.field.label}
-      description={props.field.description}
-      error={props.meta.error}
-    >
+    <FieldMetaWrapper {...props}>
       <Field {...props} />
-    </FieldMeta>
+    </FieldMetaWrapper>
   )
 }
 
@@ -49,6 +64,8 @@ interface FieldMetaProps {
   description?: string
   error?: string
   margin?: boolean
+  noWrap?: boolean
+  topRightContent?: any
 }
 
 export const FieldMeta = ({
@@ -58,15 +75,31 @@ export const FieldMeta = ({
   error,
   margin = true,
   children,
+  noWrap,
+  topRightContent,
 }: FieldMetaProps) => {
-  return (
-    <FieldWrapper margin={margin}>
-      <FieldLabel htmlFor={name}>
-        {label || name}
-        {description && <FieldDescription>{description}</FieldDescription>}
-      </FieldLabel>
+  const content = (
+    <div style={{ display: 'block' }}>
       {children}
       {error && <FieldError>{error}</FieldError>}
+    </div>
+  )
+
+  if (noWrap) {
+    return content
+  }
+
+  return (
+    <FieldWrapper margin={margin}>
+      <FieldLabelWrapper>
+        <FieldLabel htmlFor={name}>
+          {label || name}
+          {description && <FieldDescription>{description}</FieldDescription>}
+        </FieldLabel>
+
+        {topRightContent && <div>{topRightContent}</div>}
+      </FieldLabelWrapper>
+      {content}
     </FieldWrapper>
   )
 }
@@ -82,6 +115,17 @@ export const FieldWrapper = styled.div<{ margin: boolean }>`
     `};
 `
 
+export const FieldLabelWrapper = styled.div`
+  all: unset;
+  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+`
+
 export const FieldLabel = styled.label`
   all: unset;
   font-family: 'Inter', sans-serif;
@@ -91,9 +135,7 @@ export const FieldLabel = styled.label`
   letter-spacing: 0.01em;
   line-height: 1.35;
   color: var(--tina-color-grey-8);
-  margin-bottom: 8px;
   text-overflow: ellipsis;
-  width: 100%;
   overflow: hidden;
 `
 
