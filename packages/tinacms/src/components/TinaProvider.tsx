@@ -32,6 +32,7 @@ export interface TinaProviderProps {
   hidden?: boolean
   position?: SidebarPosition
   styled?: boolean
+  rootContainerNode?: Element
 }
 
 export const INVALID_CMS_ERROR =
@@ -42,6 +43,7 @@ export const TinaProvider: React.FC<TinaProviderProps> = ({
   children,
   position,
   styled = true,
+  rootContainerNode,
 }) => {
   const [enabled, setEnabled] = useState(cms.enabled)
 
@@ -57,7 +59,7 @@ export const TinaProvider: React.FC<TinaProviderProps> = ({
 
   return (
     <CMSContext.Provider value={cms}>
-      <ModalProvider>
+      <ModalProvider rootContainerNode={rootContainerNode}>
         <Alerts alerts={cms.alerts} />
         {enabled && styled && <Theme />}
         {enabled && cms.toolbar && <Toolbar />}

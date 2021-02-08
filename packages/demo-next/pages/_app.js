@@ -1,20 +1,20 @@
 /**
 
-Copyright 2019 Forestry.io Inc
+ Copyright 2019 Forestry.io Inc
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
 
-*/
+ */
 
 import React from 'react'
 import App from 'next/app'
@@ -23,6 +23,7 @@ import { GitClient, GitMediaStore } from '@tinacms/git-client'
 import { GlobalStyles as TinaCustomStyles } from '@tinacms/styles'
 import { NextGitMediaStore } from '../next-git-media-store'
 import { MarkdownFieldPlugin } from 'react-tinacms-editor'
+
 //import { CustomPaginatorPlugin } from '../plugins/CustomPaginator'
 
 function Empty() {
@@ -54,16 +55,50 @@ export default class Site extends App {
     this.cms.registerApi('git', client)
     this.cms.media.store = new NextGitMediaStore(client)
     this.cms.plugins.add(MarkdownFieldPlugin)
+
+    this.rootContainerRef = React.createRef()
+
+    // added state.node in order to be able to anchor to the parent window
+    this.state = {
+      node: null,
+    }
+  }
+
+  componentDidMount() {
+    if (window.self === window.top) {
+      this.setState({ node: this.rootContainerRef.current })
+    } else {
+      this.setState({
+        node: window.parent.document.getElementById('rootContainer'),
+      })
+    }
   }
 
   render() {
     const { Component, pageProps } = this.props
+
+    if (Component.noTina) {
+      return (
+        <div>
+          <TinaCustomStyles />
+          <div id={'rootContainer'} ref={this.rootContainerRef} />
+          <Component {...pageProps} />
+        </div>
+      )
+    }
+
     return (
-      // Example: this config doesn't load external 'Inter' Font
-      <TinaProvider cms={this.cms} styled={false}>
-        <TinaCustomStyles />
-        <Component {...pageProps} />
-      </TinaProvider>
+      <div>
+        // Example: this config doesn't load external 'Inter' Font
+        <TinaProvider
+          cms={this.cms}
+          styled={false}
+          rootContainerNode={this.state.node}
+        >
+          <TinaCustomStyles />
+          <Component {...pageProps} />
+        </TinaProvider>
+      </div>
     )
   }
 }
