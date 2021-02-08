@@ -31,7 +31,8 @@
     "@tinacms/styles": ">=0.3",
     "react": ">=16.8",
     "react-dom": ">=16.8",
-    "styled-components": ">=4.1"
+    "styled-components": ">=4.1",
+    "react-draggable": "^4.4.3"
   },
   "gitHead": "87c8f9a3ca2c5bf41e1a4c54a73759d12a7c5bfd"
 }

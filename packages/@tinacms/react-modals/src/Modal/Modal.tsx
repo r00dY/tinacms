@@ -22,6 +22,7 @@ import { StyleReset } from '@tinacms/styles'
 import { useModalContainer } from '../ModalProvider'
 import { ModalOverlay } from './ModalOverlay'
 import { StyleSheetManager } from 'styled-components'
+import Draggable from 'react-draggable'
 
 export type ModalProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -36,7 +37,9 @@ export const Modal = (props: ModalProps) => {
   let content = (
     <StyleReset>
       <ModalOverlay>
-        <div {...props} />
+        <Draggable>
+          <div {...props} />
+        </Draggable>
       </ModalOverlay>
     </StyleReset>
   )
