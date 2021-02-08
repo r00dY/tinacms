@@ -40,6 +40,7 @@ export const PopupModal: StyledComponent<'div', {}, {}> = styled.div`
   width: 460px;
   max-width: 90%;
   animation: ${ModalPopupKeyframes} 150ms ease-out 1;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 15%), 0 10px 10px rgb(0 0 0 / 12%);
 `
 
 /**

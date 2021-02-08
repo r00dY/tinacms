@@ -19,7 +19,14 @@ limitations under the License.
 import * as React from 'react'
 import { useCallback, useState } from 'react'
 
-export const ModalProvider: React.FC = ({ children }) => {
+export type ModalProviderProps = {
+  rootContainerNode?: Element
+}
+
+export const ModalProvider: React.FC<ModalProviderProps> = ({
+  children,
+  rootContainerNode,
+}) => {
   const [modalRootContainerRef, setModalRootContainerRef] = useState(
     null as Element | null
   )
@@ -30,16 +37,18 @@ export const ModalProvider: React.FC = ({ children }) => {
     }
   }, [])
 
-  return (
+  const content = (
     <>
       <div id="modal-root" ref={setModalRef} />
       <ModalContainerContext.Provider
-        value={{ portalNode: modalRootContainerRef }}
+        value={{ portalNode: rootContainerNode || modalRootContainerRef }}
       >
         {children}
       </ModalContainerContext.Provider>
     </>
   )
+
+  return content
 }
 
 export interface ModalContext {
