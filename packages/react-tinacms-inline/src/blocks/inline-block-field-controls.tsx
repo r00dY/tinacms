@@ -71,6 +71,7 @@ export function BlocksControls({
     direction,
     min,
     max,
+    customAddAction,
   } = useInlineBlocks()
   const isFirst = index === 0
   const isLast = index === count - 1
@@ -154,6 +155,7 @@ export function BlocksControls({
                 index={index}
                 offset={offset}
                 position={addBeforePosition}
+                customAddAction={customAddAction}
               />
               <AddBlockMenu
                 addBlock={block => insert(index + 1, block)}
@@ -161,6 +163,7 @@ export function BlocksControls({
                 index={index}
                 offset={offset}
                 position={addAfterPosition}
+                customAddAction={customAddAction}
               />
             </AddBlockMenuWrapper>
           )}
