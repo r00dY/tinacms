@@ -23,7 +23,18 @@ import { AddBlockMenu } from './add-block-menu'
 import { useInlineForm } from '../inline-form'
 import styled from 'styled-components'
 import { InlineFieldContext } from '../inline-field-context'
-import { useCMS } from 'tinacms'
+import { BlockTemplate, useCMS } from 'tinacms'
+
+export type AddActionCallbackType = {
+  (key?: string): void
+}
+
+export type AddActionType = {
+  (
+    blocks: { [key: string]: { template: BlockTemplate } },
+    finish: AddActionCallbackType
+  ): void
+}
 
 export interface InlineBlocksProps {
   name: string
@@ -43,6 +54,7 @@ export interface InlineBlocksProps {
   components?: {
     Container?: React.FunctionComponent<BlocksContainerProps>
   }
+  customAddAction?: AddActionType
 }
 
 export interface BlocksContainerProps {
@@ -66,6 +78,7 @@ export interface InlineBlocksActions {
   direction: 'vertical' | 'horizontal'
   min?: number
   max?: number
+  customAddAction?: AddActionType
 }
 
 export const InlineBlocksContext = React.createContext<InlineBlocksActions | null>(
@@ -91,6 +104,7 @@ export function InlineBlocks({
   min,
   max,
   components = {},
+  customAddAction,
 }: InlineBlocksProps) {
   const cms = useCMS()
   const { setFocussedField } = useInlineForm()
@@ -146,6 +160,7 @@ export function InlineBlocks({
                 direction,
                 min,
                 max,
+                customAddAction,
               }}
             >
               {allData.length < 1 && cms.enabled && (

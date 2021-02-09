@@ -17,9 +17,20 @@ limitations under the License.
 */
 
 import * as React from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { useJsonForm } from 'next-tinacms-json'
-import { ModalProvider, BlockTemplate } from 'tinacms'
+import {
+  ModalProvider,
+  BlockTemplate,
+  Field,
+  Modal,
+  ModalPopup,
+  ModalHeader,
+  ModalBody,
+  FieldsBuilder,
+  ModalActions,
+} from 'tinacms'
 import {
   InlineForm,
   InlineImage,
@@ -32,12 +43,75 @@ import {
 import { InlineWysiwyg } from 'react-tinacms-editor'
 
 import Layout from '../components/Layout'
+import { InlineFieldContext } from 'react-tinacms-inline/src'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+import { Button } from '@tinacms/styles'
+
+export interface TestModalProps {
+  close(): void
+  payload: any
+}
+
+export function TestModal({ close, payload }: TestModalProps) {
+  // function handleCancel(event: any) {
+  //   event.stopPropagation()
+  //   event.preventDefault()
+  //   form.updateValues(initialValues)
+  //   close()
+  // }
+
+  function handleClose(event: any) {
+    event.stopPropagation()
+    event.preventDefault()
+    close()
+  }
+
+  const keys = Object.keys(payload.blocks)
+
+  return (
+    <Modal id="test-modal" onClick={e => e.stopPropagation()}>
+      <ModalPopup>
+        <ModalHeader close={close}>test modal</ModalHeader>
+        <ModalBody>
+          {keys.map(key => {
+            return (
+              <div>
+                <button
+                  onClick={e => {
+                    payload.finish(key)
+                    handleClose(e)
+                  }}
+                >
+                  {key}{' '}
+                </button>
+                <br />
+                <br />
+              </div>
+            )
+          })}
+        </ModalBody>
+        <ModalActions>
+          {/*<Button onClick={handleCancel}>Cancel</Button>*/}
+          <Button
+            onClick={handleClose}
+            // disabled={form.values === initialValues}
+            // primary
+          >
+            Confirm
+          </Button>
+        </ModalActions>
+      </ModalPopup>
+    </Modal>
+  )
+}
 
 /**
  * This is an example page that uses Blocks from Json
  */
 export default function BlocksExample({ jsonFile }) {
   const [data, form] = useJsonForm(jsonFile)
+
+  const [customAddPayload, setCustomAddPayload] = useState(null)
 
   return (
     <ModalProvider>
@@ -64,10 +138,26 @@ export default function BlocksExample({ jsonFile }) {
               }}
               min={2}
               max={4}
+              customAddAction={(blocks, finish) => {
+                setCustomAddPayload({
+                  blocks,
+                  finish,
+                })
+              }}
             />
+
+            {customAddPayload && (
+              <TestModal
+                close={() => {
+                  setCustomAddPayload(null)
+                }}
+                payload={customAddPayload}
+              />
+            )}
           </Wrap>
         </InlineForm>
       </Layout>
+
       <style jsx>
         {`
           h1 {
