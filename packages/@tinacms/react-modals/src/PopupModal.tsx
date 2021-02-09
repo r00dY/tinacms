@@ -16,7 +16,9 @@ limitations under the License.
 
 */
 
+import React from 'react'
 import styled, { keyframes, StyledComponent } from 'styled-components'
+import Draggable from 'react-draggable'
 
 const ModalPopupKeyframes = keyframes`
   0% {
@@ -30,7 +32,7 @@ const ModalPopupKeyframes = keyframes`
   }
 `
 
-export const PopupModal: StyledComponent<'div', {}, {}> = styled.div`
+const PopupModalStyled: StyledComponent<'div', {}, {}> = styled.div`
   display: block;
   z-index: var(--tina-z-index-0);
   overflow: visible; /* Keep this as "visible", select component needs to overflow */
@@ -42,6 +44,20 @@ export const PopupModal: StyledComponent<'div', {}, {}> = styled.div`
   animation: ${ModalPopupKeyframes} 150ms ease-out 1;
   box-shadow: 0 14px 28px rgb(0 0 0 / 15%), 0 10px 10px rgb(0 0 0 / 12%);
 `
+
+export const PopupModal = (props: any) => {
+  const { draggable, ...restProps } = props
+
+  if (draggable) {
+    return (
+      <Draggable>
+        <PopupModalStyled {...restProps} />
+      </Draggable>
+    )
+  }
+
+  return <PopupModalStyled {...restProps} />
+}
 
 /**
  * @alias [PopupModal]

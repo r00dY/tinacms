@@ -109,7 +109,7 @@ export function SettingsModal({
   )
   return (
     <Modal id="tinacms-inline-settings" onClick={e => e.stopPropagation()}>
-      <ModalPopup>
+      <ModalPopup draggable>
         <ModalHeader close={close}>{title}</ModalHeader>
         <ModalBody>
           <DragDropContext onDragEnd={moveArrayItem}>
