@@ -23,18 +23,10 @@ import { AddBlockMenu } from './add-block-menu'
 import { useInlineForm } from '../inline-form'
 import styled from 'styled-components'
 import { InlineFieldContext } from '../inline-field-context'
-import { BlockTemplate, useCMS } from 'tinacms'
+import { useCMS } from 'tinacms'
+import { ReactElement } from 'react'
 
-export type AddActionCallbackType = {
-  (key?: string): void
-}
-
-export type AddActionType = {
-  (
-    blocks: { [key: string]: { template: BlockTemplate } },
-    finish: AddActionCallbackType
-  ): void
-}
+import { AddActionType } from './add-action-types'
 
 export interface InlineBlocksProps {
   name: string
@@ -53,6 +45,7 @@ export interface InlineBlocksProps {
   max?: number
   components?: {
     Container?: React.FunctionComponent<BlocksContainerProps>
+    EmptyState?: React.FunctionComponent<BlocksEmptyStateProps>
   }
   customAddAction?: AddActionType
 }
@@ -60,6 +53,11 @@ export interface InlineBlocksProps {
 export interface BlocksContainerProps {
   className?: string
   children?: React.ReactNode
+}
+
+export interface BlocksEmptyStateProps {
+  addButton: ReactElement
+  runCustomAddAction?: () => void
 }
 
 const DefaultContainer = (props: BlocksContainerProps) => {
@@ -147,6 +145,51 @@ export function InlineBlocks({
 
         const Container = components.Container || DefaultContainer
 
+        // TODO: dedupe -> this code is also in AddBlockMenu
+        const getDefaultProps = (defaultItem: any) => {
+          return typeof defaultItem === 'function' ? defaultItem() : defaultItem
+        }
+
+        const runCustomAddAction = (index: number) => {
+          if (!customAddAction) {
+            throw new Error('custom action not defined')
+          }
+
+          customAddAction(blocks, (key?: string) => {
+            if (!key) {
+              return
+            }
+
+            const block = blocks[key]
+            const template = block.template
+
+            insert(index, {
+              _template: key,
+              ...getDefaultProps(template?.defaultItem),
+            })
+          })
+        }
+
+        // Empty state
+        const addButton = (
+          <AddBlockMenu
+            addBlock={block => insert(0, block)}
+            blocks={blocks}
+            runCustomAddAction={runCustomAddAction}
+          />
+        )
+
+        const emptyState = components.EmptyState ? (
+          <components.EmptyState
+            addButton={addButton}
+            runCustomAddAction={() => {
+              runCustomAddAction(0)
+            }}
+          />
+        ) : (
+          <DefaultBlocksEmptyState>{addButton}</DefaultBlocksEmptyState>
+        )
+
         return (
           <Container className={className}>
             <InlineBlocksContext.Provider
@@ -164,12 +207,7 @@ export function InlineBlocks({
               }}
             >
               {allData.length < 1 && cms.enabled && (
-                <BlocksEmptyState>
-                  <AddBlockMenu
-                    addBlock={block => insert(0, block)}
-                    blocks={blocks}
-                  />
-                </BlocksEmptyState>
+                <BlocksEmptyState>{emptyState}</BlocksEmptyState>
               )}
 
               {allData.map((data, index) => {
@@ -238,7 +276,9 @@ export function InlineBlock({
   )
 }
 
-export const BlocksEmptyState = styled.div`
+export const BlocksEmptyState = styled.div``
+
+const DefaultBlocksEmptyState = styled.div`
   padding: var(--tina-padding-small);
   position: relative;
   width: 100%;

@@ -23,7 +23,6 @@ import { IconButton } from '@tinacms/styles'
 import { AddIcon } from '@tinacms/icons'
 
 import { getOffset, getOffsetX, getOffsetY } from '../styles'
-import { AddActionType } from './inline-field-blocks'
 
 interface AddBlockMenuProps {
   addBlock(data: any): void
@@ -31,7 +30,7 @@ interface AddBlockMenuProps {
   position?: 'top' | 'bottom' | 'left' | 'right'
   index?: number
   offset?: number | { x: number; y: number }
-  customAddAction?: AddActionType
+  runCustomAddAction?: (index: number) => void
 }
 
 export function AddBlockMenu({
@@ -40,7 +39,7 @@ export function AddBlockMenu({
   position,
   index,
   offset,
-  customAddAction,
+  runCustomAddAction,
 }: AddBlockMenuProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const addBlockButtonRef = React.useRef<HTMLButtonElement>(null)
@@ -55,21 +54,8 @@ export function AddBlockMenu({
     event.preventDefault()
 
     // Custom add action
-    if (customAddAction) {
-      customAddAction(blocks, (key?: string) => {
-        if (!key) {
-          return
-        }
-
-        const block = blocks[key]
-        const template = block.template
-
-        addBlock({
-          _template: key,
-          ...getDefaultProps(template?.defaultItem),
-        })
-      })
-
+    if (runCustomAddAction) {
+      runCustomAddAction(index || 0)
       return
     }
 

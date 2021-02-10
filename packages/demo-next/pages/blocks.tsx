@@ -136,13 +136,35 @@ export default function BlocksExample({ jsonFile }) {
               itemProps={{
                 style: { backgroundColor: 'red' },
               }}
-              min={2}
+              min={0}
               max={4}
               customAddAction={(blocks, finish) => {
                 setCustomAddPayload({
                   blocks,
                   finish,
                 })
+              }}
+              components={{
+                EmptyState: props => {
+                  return (
+                    <div
+                      style={{
+                        padding: 50,
+                        border: '2px dashed red',
+                        color: 'red',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        props.runCustomAddAction()
+                      }}
+                    >
+                      <div>Add element</div>
+                    </div>
+                  )
+                },
               }}
             />
 
