@@ -76,7 +76,7 @@ export interface InlineBlocksActions {
   direction: 'vertical' | 'horizontal'
   min?: number
   max?: number
-  customAddAction?: AddActionType
+  runCustomAddAction?: (index: number) => void
 }
 
 export const InlineBlocksContext = React.createContext<InlineBlocksActions | null>(
@@ -203,7 +203,7 @@ export function InlineBlocks({
                 direction,
                 min,
                 max,
-                customAddAction,
+                runCustomAddAction,
               }}
             >
               {allData.length < 1 && cms.enabled && (

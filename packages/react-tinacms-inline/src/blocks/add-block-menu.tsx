@@ -30,7 +30,7 @@ interface AddBlockMenuProps {
   position?: 'top' | 'bottom' | 'left' | 'right'
   index?: number
   offset?: number | { x: number; y: number }
-  runCustomAddAction?: (index: number) => void
+  runCustomAddAction?: () => void
 }
 
 export function AddBlockMenu({
@@ -55,7 +55,7 @@ export function AddBlockMenu({
 
     // Custom add action
     if (runCustomAddAction) {
-      runCustomAddAction(index || 0)
+      runCustomAddAction()
       return
     }
 
