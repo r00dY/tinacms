@@ -102,7 +102,12 @@ const cta_template: BlockTemplate = {
 function CallToActionBlock({ index, data }) {
   return (
     <div className="block">
-      <BlocksControls index={index}>
+      <BlocksControls
+        index={index}
+        focusRing={{
+          noSize: true,
+        }}
+      >
         <button
           onClick={() => window.open(data.url, '_blank')}
           style={{ display: 'block', background: 'pink' }}

@@ -52,6 +52,7 @@ export function InlineGroupControls({
   const borderRadius =
     typeof focusRing === 'object' ? focusRing.borderRadius : undefined
   const offset = typeof focusRing === 'object' ? focusRing.offset : undefined
+  const noSize = typeof focusRing === 'object' ? focusRing.noSize : false
 
   React.useEffect(() => {
     if (!focusRing || !name) return
@@ -79,6 +80,7 @@ export function InlineGroupControls({
       borderRadius={borderRadius}
       disableHover={focusRing === false ? true : childActive}
       disableChildren={!active && !childActive}
+      noSize={noSize}
     >
       <BlockMenuWrapper
         ref={groupMenuRef}
