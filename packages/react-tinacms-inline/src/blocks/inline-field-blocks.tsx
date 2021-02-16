@@ -175,7 +175,9 @@ export function InlineBlocks({
           <AddBlockMenu
             addBlock={block => insert(0, block)}
             blocks={blocks}
-            runCustomAddAction={runCustomAddAction}
+            runCustomAddAction={() => {
+              runCustomAddAction(0)
+            }}
           />
         )
 
