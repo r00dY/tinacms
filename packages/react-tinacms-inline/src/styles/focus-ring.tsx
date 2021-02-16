@@ -24,6 +24,7 @@ export interface FocusRingOptions {
   offset?: number | { x: number; y: number }
   borderRadius?: number
   nestedFocus?: boolean
+  noSize?: boolean
 }
 
 export interface StyledFocusRingProps
@@ -48,6 +49,7 @@ export const FocusRing = ({ name, options, children }: FocusRingProps) => {
     typeof options === 'object' ? options.borderRadius : undefined
   const offset = typeof options === 'object' ? options.offset : undefined
   const nestedFocus = typeof options === 'object' ? options.nestedFocus : false
+  const noSize = typeof options === 'object' ? options.noSize : false
 
   React.useEffect(() => {
     if (!options || !name) return
@@ -71,6 +73,7 @@ export const FocusRing = ({ name, options, children }: FocusRingProps) => {
       borderRadius={borderRadius}
       disableHover={!options || childActive}
       disableChildren={nestedFocus && !active && !childActive}
+      noSize={noSize}
     >
       {typeof children === 'function' ? children(active) : children}
     </StyledFocusRing>
@@ -82,8 +85,8 @@ export const StyledFocusRing = styled.div<StyledFocusRingProps>(p => {
 
   return css`
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: ${p.noSize ? 'auto' : '100%'};
+    height: ${p.noSize ? 'auto' : '100%'};
     min-height: var(--tina-font-size-0);
 
     ${!p.disableHover &&

@@ -130,6 +130,8 @@ export function BlocksControls({
   const borderRadius =
     typeof focusRing === 'object' ? focusRing.borderRadius : undefined
 
+  const noSize = typeof focusRing === 'object' ? focusRing.noSize : false
+
   function withinLimit(limit: number | undefined) {
     if (!limit) return true
 
@@ -144,6 +146,7 @@ export function BlocksControls({
       borderRadius={borderRadius}
       disableHover={focusRing === false ? true : childIsActive}
       disableChildren={!isActive && !childIsActive}
+      noSize={noSize}
     >
       {isActive && (
         <>
