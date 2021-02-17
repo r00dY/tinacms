@@ -55,6 +55,7 @@ export function AddBlockMenu({
 
     // Custom add action
     if (runCustomAddAction) {
+      // FIXME: this is a bug -> runCustomAddaction should run if customAddEction exists.
       runCustomAddAction()
       return
     }

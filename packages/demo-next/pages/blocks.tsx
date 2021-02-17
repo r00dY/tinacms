@@ -114,7 +114,7 @@ export default function BlocksExample({ jsonFile }) {
   const [customAddPayload, setCustomAddPayload] = useState(null)
 
   return (
-    <ModalProvider>
+    <>
       <Layout>
         <InlineForm form={form}>
           <DiscardChanges />
@@ -191,7 +191,7 @@ export default function BlocksExample({ jsonFile }) {
           }
         `}
       </style>
-    </ModalProvider>
+    </>
   )
 }
 

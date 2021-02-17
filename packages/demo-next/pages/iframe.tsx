@@ -23,7 +23,7 @@ const IndexIframePage = () => {
         <iframe
           width={800}
           style={{ margin: '100px auto', height: '80vh' }}
-          src={'/nesting'}
+          src={'/blocks'}
           id={'iframe'}
         />
       </div>
