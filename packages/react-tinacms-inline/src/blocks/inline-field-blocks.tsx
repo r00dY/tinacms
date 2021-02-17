@@ -58,6 +58,7 @@ export interface BlocksContainerProps {
 export interface BlocksEmptyStateProps {
   addButton: ReactElement
   runCustomAddAction?: () => void
+  active: boolean
 }
 
 const DefaultContainer = (props: BlocksContainerProps) => {
@@ -105,7 +106,9 @@ export function InlineBlocks({
   customAddAction,
 }: InlineBlocksProps) {
   const cms = useCMS()
-  const { setFocussedField } = useInlineForm()
+  const { setFocussedField, focussedField } = useInlineForm()
+
+  const isChildActive = focussedField.startsWith(name)
 
   return (
     <InlineField name={name}>
@@ -187,9 +190,10 @@ export function InlineBlocks({
             runCustomAddAction={() => {
               runCustomAddAction(0)
             }}
+            active={isChildActive}
           />
         ) : (
-          <DefaultBlocksEmptyState>{addButton}</DefaultBlocksEmptyState>
+          <BlocksEmptyState>{addButton}</BlocksEmptyState>
         )
 
         return (
@@ -208,9 +212,7 @@ export function InlineBlocks({
                 runCustomAddAction,
               }}
             >
-              {allData.length < 1 && cms.enabled && (
-                <BlocksEmptyState>{emptyState}</BlocksEmptyState>
-              )}
+              {allData.length < 1 && cms.enabled && emptyState}
 
               {allData.map((data, index) => {
                 const Block = blocks[data._template]
@@ -278,9 +280,7 @@ export function InlineBlock({
   )
 }
 
-export const BlocksEmptyState = styled.div``
-
-const DefaultBlocksEmptyState = styled.div`
+export const BlocksEmptyState = styled.div`
   padding: var(--tina-padding-small);
   position: relative;
   width: 100%;
