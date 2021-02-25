@@ -89,6 +89,7 @@ const Textarea = styled(TextareaAutosize)`
   line-height: inherit;
   margin: 0 auto;
   max-width: inherit;
+  text-transform: inherit;
   background-color: inherit;
   text-align: inherit;
   outline: none;
@@ -96,6 +97,7 @@ const Textarea = styled(TextareaAutosize)`
   border: none;
   overflow: visible;
   position: relative;
+  padding: 0;
   -ms-overflow-style: none;
 
   ::-webkit-scrollbar {
